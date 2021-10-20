@@ -3,13 +3,15 @@
       th:replace="~{components/layout :: layout(_, ~{::#contents}, _)}">
 <body>
 <div id="contents">
-    <div id="sort-menu" th:fragment="sort-menu(arrayPairs)" class="dropdown">
+    <div id="sort-menu" th:fragment="sort-menu(arrayPairs)" class="dropdown" th:with="direction=${param.direction} ?: 'asc'">
         <a class="btn btn-sm btn-outline-secondary dropdown-toggle ms-1" href="#" role="button"
            id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
-            <i class="bi bi-sort-alpha-down"></i>&nbsp; Sort by
+            <i th:if="${#strings.equalsIgnoreCase(direction, 'asc')}" class="bi bi-sort-alpha-down"></i>
+            <i th:if="${#strings.equalsIgnoreCase(direction, 'desc')}" class="bi bi-sort-alpha-up"></i>
+            &nbsp; Sort by
         </a>
         <th:block th:with="pairs=${arrayPairs}, entities=${#strings.arraySplit(pairs, ',')}">
-        <ul th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder)}, search=${urlBuilder.fromCurrentRequest()}, direction=${param.direction}"
+        <ul th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder)}, search=${urlBuilder.fromCurrentRequest()}"
             class="dropdown-menu" aria-labelledby="dropdownMenuLink">
             <li th:each="entity: ${entities}" th:with="pair=${#strings.arraySplit(entity, '-')}">
                 <a class="dropdown-item" th:href="${search.replaceQueryParam('sort', pair[0].trim()).toUriString()}" th:text="${pair[1].trim()}">First Name</a></li>
