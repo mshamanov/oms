@@ -34,6 +34,11 @@ function applySortingDirection(event) {
     }
 }
 
+function cancelOrder() {
+        store.clear();
+        window.location = "/";
+}
+
 const clearParam = window.location.search.match(/[?&]clear([^&]+)=([^&]+)/);
 
 if (clearParam && clearParam.length === 3) {
@@ -50,6 +55,7 @@ if (clearParam && clearParam.length === 3) {
             map = JSON.parse(map);
             if (map[id]) {
                 delete map[id];
+                sessionStorage.setItem("orderProducts", JSON.stringify(map));
             }
         }
     }

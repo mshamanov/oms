@@ -5,10 +5,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import java.math.BigDecimal;
+import java.util.List;
 
 @Entity
 @Table(name = "products")
@@ -26,7 +28,16 @@ public class Product {
     private String name;
 
     @NotNull(message = "Product price must not be null")
-    @Positive(message = "Product price must be a positive number")
+    @Digits(integer = 19, fraction = 2)
+    @Positive
     @Column
     private BigDecimal price;
+
+    @OneToMany(mappedBy = "product")
+    private List<OrderItem> orderItems;
+
+    @PreRemove
+    public void preRemove() {
+        this.orderItems.forEach(orderItem -> orderItem.setProduct(null));
+    }
 }

@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
@@ -25,8 +26,7 @@ public class OrderItem {
     @JoinColumn(name = "order_id")
     private Order order;
 
-    @NotNull(message = "Product id must not be null")
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;
 
@@ -36,12 +36,14 @@ public class OrderItem {
     private Long amount;
 
     @NotNull(message = "Product price must not be null")
-    @Positive(message = "Product price must be a positive number")
+    @Digits(integer = 19, fraction = 2)
+    @Positive
     @Column
     private BigDecimal price;
 
     @NotNull(message = "Total product price must not be null")
-    @Positive(message = "Total product price must be a positive number")
+    @Digits(integer = 19, fraction = 2)
+    @Positive
     @Column
     private BigDecimal totalPrice;
 }

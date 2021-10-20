@@ -20,13 +20,7 @@
     </div>
     <div class="row">
         <div class="col-sm-4">
-            <form th:action="@{/orders}" method="get">
-                <div class="input-group mb-3">
-                    <input type="text" name="search" class="form-control" placeholder="Search"
-                           th:value="${param.search} ?: _">
-                    <button type="submit" class="btn btn-outline-secondary">Search</button>
-                </div>
-            </form>
+            <div th:replace="~{components/search-bar :: search-bar(@{/orders}, _)}"></div>
         </div>
     </div>
     <div class="table-responsive">

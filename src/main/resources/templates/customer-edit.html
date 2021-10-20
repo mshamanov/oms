@@ -10,12 +10,15 @@
         <h2 class="h2" th:text="${pageTitle} ?: _">Customer</h2>
     </div>
     <div class="row mt-2 mb-5">
-        <form th:action="@{/saveCustomer}" th:object="${customer}" method="post" class="needs-validation" novalidate="">
+        <form th:action="@{/saveCustomer}" th:object="${customer}" th:with="errors=${#fields.hasAnyErrors()}"
+              method="post" class="needs-validation" novalidate="">
             <input type="hidden" th:field="*{id}">
             <div class="row g-3">
                 <div class="col-sm-6">
                     <label for="firstName" class="form-label">First name</label>
-                    <input type="text" class="form-control" th:errorclass="is-invalid" id="firstName"
+                    <input type="text" class="form-control"
+                           th:classappend="${errors} and not ${#fields.hasErrors('firstName')} ? 'is-valid'"
+                           th:errorclass="is-invalid" id="firstName"
                            th:field="*{firstName}" placeholder=""
                            value="" required="">
                     <div class="invalid-feedback">
@@ -25,7 +28,9 @@
 
                 <div class="col-sm-6">
                     <label for="lastName" class="form-label">Last name</label>
-                    <input type="text" class="form-control" th:errorclass="is-invalid" id="lastName"
+                    <input type="text" class="form-control"
+                           th:classappend="${errors} and not ${#fields.hasErrors('lastName')} ? 'is-valid'"
+                           th:errorclass="is-invalid" id="lastName"
                            th:field="*{lastName}" placeholder=""
                            value="" required="">
                     <div class="invalid-feedback">
@@ -35,7 +40,9 @@
 
                 <div class="col-12">
                     <label for="email" class="form-label">Email</label>
-                    <input type="email" class="form-control" th:errorclass="is-invalid" id="email" th:field="*{email}"
+                    <input type="email" class="form-control"
+                           th:classappend="${errors} and not ${#fields.hasErrors('email')} ? 'is-valid'"
+                           th:errorclass="is-invalid" id="email" th:field="*{email}"
                            placeholder="you@example.com" required="">
                     <div class="invalid-feedback">
                         Please enter a valid email address.
@@ -44,7 +51,9 @@
 
                 <div class="col-12">
                     <label for="phoneNumber" class="form-label">Phone <span class="text-muted">(Optional)</span></label>
-                    <input type="text" class="form-control" th:errorclass="is-invalid" id="phoneNumber"
+                    <input type="text" class="form-control"
+                           th:classappend="${errors} and not ${#fields.hasErrors('phoneNumber')} ? 'is-valid'"
+                           th:errorclass="is-invalid" id="phoneNumber"
                            th:field="*{phoneNumber}" placeholder="+7 999 123 456">
                     <div class="invalid-feedback">
                         Please enter your phone number.

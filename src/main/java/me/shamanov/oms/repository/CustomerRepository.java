@@ -10,13 +10,13 @@ import java.util.List;
 import java.util.Map;
 
 public interface CustomerRepository extends JpaRepository<Customer, Long> {
-    @Query("select c from Customer c order by c.orders.size asc")
+    @Query("select c from Customer c order by size(c.orders) asc")
     Page<Customer> getAllCustomersOrderByOrdersSizeAsc(Pageable pageable);
 
-    @Query("select c from Customer c order by c.orders.size desc")
+    @Query("select c from Customer c order by size(c.orders) desc")
     Page<Customer> getAllCustomersOrderByOrdersSizeDesc(Pageable pageable);
 
-    @Query("select new map(c.id, max(c.orders.size)) from Customer c, Order o " +
-            "where o.customer.id = c.id group by (c.id) order by max(c.orders.size) desc")
+    @Query("select new map(c.id, max(size(c.orders))) from Customer c, Order o " +
+            "where o.customer.id = c.id group by (c.id) order by max(size(c.orders)) desc")
     List<Map<String, Long>> getCustomerWithMaxOrders(Pageable pageable);
 }

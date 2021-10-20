@@ -104,7 +104,7 @@ public class CustomerController {
     @PostMapping("/saveCustomer")
     public String saveCustomer(@Valid @ModelAttribute Customer customer, Errors errors, Model model) {
         if (errors.hasErrors()) {
-            model.addAttribute("pageTitle", "Adding new customer");
+            model.addAttribute("pageTitle", (customer.getId() != null ? "Updating" : "Adding") + " new customer");
             return "customer-edit";
         } else {
             this.customerService.saveCustomer(customer);

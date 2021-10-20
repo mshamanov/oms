@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{components/layout :: layout(_, ~{::#contents}, _)}">
+<body>
+<div id="contents">
+    <div th:fragment="search-bar(url, input)">
+        <form th:action="${url}" method="get">
+            <div class="input-group mb-3">
+                <th:block th:replace="${input}"></th:block>
+                <input type="text" name="search" class="form-control" placeholder="Search"
+                       th:value="${param.search} ?: _">
+                <button type="submit" class="btn btn-outline-secondary">Search</button>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

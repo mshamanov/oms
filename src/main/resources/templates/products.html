@@ -9,7 +9,7 @@
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
         <h2 class="h2">Products</h2>
         <div class="btn-toolbar">
-            <a th:href="@{/addProduct}" class="btn btn-sm btn-outline-secondary disabled">
+            <a th:href="@{/addProduct}" class="btn btn-sm btn-outline-secondary">
                 <i class="bi bi-plus-circle"></i>&nbsp;Add Product
             </a>
             <div class="d-inline-block">
@@ -36,11 +36,12 @@
                 <th scope="col">#</th>
                 <th scope="col">Name</th>
                 <th scope="col">Price</th>
+                <th scope="col">Actions</th>
             </tr>
             </thead>
             <tbody>
             <tr th:if="${#lists.isEmpty(products)}">
-                <td colspan="3">
+                <td colspan="4">
                     No products
                 </td>
             </tr>
@@ -48,6 +49,12 @@
                 <td th:text="${status.count}">1</td>
                 <td th:text="${product.name}">Some product</td>
                 <td th:text="${#numbers.formatDecimal(product.price, 1, 'DEFAULT', 2, 'DEFAULT')}">399.99</td>
+                <td>
+                    <a th:href="@{/updateProduct(id=${product.id})}" class="link-secondary">
+                        <i class="bi bi-pencil-fill"></i></a>&nbsp;
+                    <a data-link-type="confirmDelete" th:href="@{/deleteProduct(id=${product.id})}"
+                       class="link-secondary"><i class="bi bi-trash-fill"></i></a>
+                </td>
             </tr>
             </tbody>
         </table>

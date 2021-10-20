@@ -17,13 +17,7 @@
     </div>
     <div class="row">
         <div class="col-sm-4">
-            <form th:action="@{/customers}" method="get">
-                <div class="input-group mb-3">
-                    <input type="text" name="search" class="form-control" placeholder="Search"
-                           th:value="${param.search} ?: _">
-                    <button type="submit" class="btn btn-outline-secondary">Search</button>
-                </div>
-            </form>
+            <div th:replace="~{components/search-bar :: search-bar(@{/customers}, _)}"></div>
         </div>
     </div>
     <div class="table-responsive">
@@ -53,18 +47,14 @@
                 <td th:text="${customer.phoneNumber}">+7999123456</td>
                 <td th:text="${customer.orders.size()}">3</td>
                 <td>
-                    <a th:href="@{/customers(id=${customer.id})}" class="link-secondary"><i
-                            class="bi bi-info-circle-fill"></i></a>
-                    &nbsp;
-                    <a th:href="@{/createOrder(customerId=${customer.id})}" class="link-secondary"><i
-                            class="bi bi-cart-fill"></i></a>
-                    &nbsp;
-                    <a th:href="@{/updateCustomer(id=${customer.id})}" class="link-secondary"><i
-                            class="bi bi-pencil-fill"></i></a>
-                    &nbsp;
+                    <a th:href="@{/customers(id=${customer.id})}" class="link-secondary">
+                        <i class="bi bi-info-circle-fill"></i></a>&nbsp;
+                    <a th:href="@{/createOrder(customerId=${customer.id})}" class="link-secondary">
+                        <i class="bi bi-cart-fill"></i></a>&nbsp;
+                    <a th:href="@{/updateCustomer(id=${customer.id})}" class="link-secondary">
+                        <i class="bi bi-pencil-fill"></i></a>&nbsp;
                     <a data-link-type="confirmDelete" th:href="@{/deleteCustomer(id=${customer.id})}"
-                       class="link-secondary"><i
-                            class="bi bi-trash-fill"></i></a>
+                       class="link-secondary"><i class="bi bi-trash-fill"></i></a>
                 </td>
             </tr>
             </tbody>

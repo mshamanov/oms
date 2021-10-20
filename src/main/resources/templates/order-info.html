@@ -60,7 +60,7 @@
                             <tbody>
                             <tr th:each="orderItem, status : ${order.orderItems}">
                                 <td th:text="${status.count}">1</td>
-                                <td th:text="${orderItem.product.name} ?: 'Unknown'">Product name</td>
+                                <td th:text="${orderItem.product?.name} ?: 'Deleted'">Product name</td>
                                 <td th:text="${orderItem.amount}">10</td>
                                 <td th:text="${orderItem.price}">399.00</td>
                                 <td th:text="${orderItem.totalPrice}">3990.00</td>

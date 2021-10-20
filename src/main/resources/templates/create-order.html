@@ -21,9 +21,10 @@
             </div>
             <div>
                 <div class="d-inline-block">
-                    <div id="sort-menu" th:replace="~{components/sort-menu :: sort-menu('name-Name, price-Price')}"></div>
+                    <div id="sort-menu"
+                         th:replace="~{components/sort-menu :: sort-menu('name-Name, price-Price')}"></div>
                 </div>
-                <a onclick="cancelOrder(event)" class="btn btn-sm btn-outline-secondary">
+                <a onclick="cancelOrder()" class="btn btn-sm btn-outline-secondary">
                     <i class="bi bi-trash"></i>&nbsp;Cancel
                 </a>
                 <button type="submit" class="btn btn-sm btn-outline-secondary position-relative me-5">
@@ -36,14 +37,9 @@
     </form>
     <div class="row">
         <div class="col-sm-4">
-            <form th:action="@{/createOrder}" method="get">
-                <div class="input-group mb-3">
-                    <input type="hidden" name="customerId" th:value="${currentOrder.customer.id}">
-                    <input type="text" name="search" class="form-control" placeholder="Search"
-                           th:value="${param.search} ?: _">
-                    <button type="submit" class="btn btn-outline-secondary">Search</button>
-                </div>
-            </form>
+            <div th:replace="~{components/search-bar :: search-bar(@{/createOrder}, ~{::input-search})}">
+                <input th:ref="input-search" type="hidden" name="customerId" th:value="${currentOrder.customer.id}">
+            </div>
         </div>
     </div>
     <div class="table-responsive">
@@ -71,11 +67,11 @@
                 <td>
                     <div class="d-flex justify-content-center align-items-center">
                         <a href="#" class="link-secondary"><i th:id="|product-dash-${product.id}|"
-                                                     class="bi bi-dash-circle-fill"></i></a>
+                                                              class="bi bi-dash-circle-fill"></i></a>
                         <input type="number" th:id="|product-counter-${product.id}|" onkeyup="handleCounter(event)"
                                class="product-counter" value="0">
                         <a href="#" class="link-secondary"><i th:id="|product-plus-${product.id}|"
-                                                     class="bi bi-plus-circle-fill"></i></a>
+                                                              class="bi bi-plus-circle-fill"></i></a>
                     </div>
                 </td>
             </tr>
@@ -88,6 +84,7 @@
 </div>
 <script th:inline="javascript">
         const currentCustomerId = /*[[${currentOrder.customer.id}]]*/ 1;
+
 </script>
 <script type="text/javascript" th:src="@{/js/create-order.js}"></script>
 </body>

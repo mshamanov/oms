@@ -26,6 +26,14 @@ public class ProductService {
         return this.productRepository.findAll(pageable);
     }
 
+    public List<Product> getProductsByIds(Iterable<Long> ids) {
+        return this.productRepository.findAllById(ids);
+    }
+
+    public Optional<Product> getProductById(Long id) {
+        return this.productRepository.findById(id);
+    }
+
     public Page<Product> getProductsBySearchValue(String value, Pageable pageable) {
         Product product = new Product();
         product.setName(value);
@@ -37,12 +45,20 @@ public class ProductService {
         return this.productRepository.findAll(productExample, pageable);
     }
 
-    public Optional<Product> getProductById(Long id) {
-        return this.productRepository.findById(id);
+    public Product saveProduct(Product product) {
+        return this.productRepository.save(product);
     }
 
-    public List<Product> getProductsByIds(Iterable<Long> ids) {
-        return this.productRepository.findAllById(ids);
+    public void deleteProduct(Product product) {
+        this.productRepository.delete(product);
+    }
+
+    public void deleteProductById(Long id) {
+        this.productRepository.deleteById(id);
+    }
+
+    public boolean isProductExists(Long id) {
+        return this.productRepository.existsById(id);
     }
 
     public long getTotalCount() {

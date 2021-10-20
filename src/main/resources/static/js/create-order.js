@@ -98,11 +98,6 @@ function updateStorage(productId, price, amount) {
     store.setItem("orderProducts", JSON.stringify(map));
 }
 
-function cancelOrder(event) {
-        store.clear();
-        window.location = "/";
-}
-
 function submitOrderForm(event) {
     // event.preventDefault();
     const sendForm = event.target;

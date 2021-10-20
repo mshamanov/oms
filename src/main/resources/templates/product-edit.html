@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{components/layout :: layout(~{::title}, ~{::#contents}, _)}">
+<head>
+    <title th:text="${pageTitle} ?: _">Product</title>
+</head>
+<body>
+<div id="contents">
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h2 class="h2" th:text="${pageTitle} ?: _">Product</h2>
+    </div>
+    <div class="row mt-2 mb-5">
+        <form th:action="@{/saveProduct}" th:object="${product}" th:with="errors=${#fields.hasAnyErrors()}"
+              method="post" class="needs-validation" novalidate="">
+            <input type="hidden" th:field="*{id}">
+            <div class="row g-3">
+                <div class="col-sm-6">
+                    <label for="name" class="form-label">Name</label>
+                    <input type="text" class="form-control"
+                           th:classappend="${errors} and not ${#fields.hasErrors('name')} ? 'is-valid'"
+                           th:errorclass="is-invalid" id="name"
+                           th:field="*{name}" placeholder="" value="" required="">
+                    <div class="invalid-feedback">
+                        Valid name is required.
+                    </div>
+                </div>
+            </div>
+            <div class="row g-3">
+                <div class="col-sm-6">
+                    <label for="price" class="form-label">Price</label>
+                    <input type="number" class="form-control"
+                           th:classappend="${errors} and not ${#fields.hasErrors('price')} ? 'is-valid'"
+                           th:errorclass="is-invalid" id="price"
+                           th:field="*{price}" placeholder="" min="0.01" step="0.01" value="0" required="">
+                    <div class="invalid-feedback">
+                        Valid price is required.
+                    </div>
+                </div>
+            </div>
+            <hr class="my-4">
+            <div class="row mb-2">
+                <p>
+                    <button class="btn btn-secondary" type="submit">Save product</button>
+                    <a id="backBtn" name="backBtn" onclick="window.history.go(-1)"
+                       class="btn btn-secondary px-4">Back</a>
+                </p>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>
