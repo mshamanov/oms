@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{components/layout :: layout(_, ~{::#contents}, _)}">
+<body>
+<div id="contents">
+    <div id="sort-menu" th:fragment="sort-menu(arrayPairs)" class="dropdown">
+        <a class="btn btn-sm btn-outline-secondary dropdown-toggle ms-1" href="#" role="button"
+           id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="bi bi-sort-alpha-down"></i>&nbsp; Sort by
+        </a>
+        <th:block th:with="pairs=${arrayPairs}, entities=${#strings.arraySplit(pairs, ',')}">
+        <ul th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder)}, search=${urlBuilder.fromCurrentRequest()}, direction=${param.direction}"
+            class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+            <li th:each="entity: ${entities}" th:with="pair=${#strings.arraySplit(entity, '-')}">
+                <a class="dropdown-item" th:href="${search.replaceQueryParam('sort', pair[0].trim()).toUriString()}" th:text="${pair[1].trim()}">First Name</a></li>
+            <hr>
+            <li onclick="applySortingDirection(event)">
+                <div class="ps-2">
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="sort-radio" id="sort-asc"
+                               th:attr="checked=${direction == null || #strings.equalsIgnoreCase(direction, 'asc') ? 'checked' : _}">
+                        <label class="form-check-label" for="sort-asc">
+                            Ascending
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="sort-radio" id="sort-desc"
+                               th:attr="checked=${#strings.equalsIgnoreCase(direction, 'desc') ? 'checked' : _ }">
+                        <label class="form-check-label" for="sort-desc">
+                            Descending
+                        </label>
+                    </div>
+                </div>
+            </li>
+        </ul>
+        </th:block>
+    </div>
+</div>
+</body>
+</html>

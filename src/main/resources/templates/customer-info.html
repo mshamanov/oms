@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{components/layout :: layout(~{::title}, ~{::#contents}, _)}">
+<head>
+    <title>Customer</title>
+</head>
+<body>
+<div id="contents">
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h2 class="h2">Customer</h2>
+        <div>
+            <a th:href="@{/updateCustomer(id=${customer.id})}" class="btn btn-sm btn-outline-secondary">
+                <i class="bi bi-pencil"></i>&nbsp;Edit
+            </a>
+            <a data-link-type="confirmDelete" th:href="@{/deleteCustomer(id=${customer.id})}" class="btn btn-sm btn-outline-secondary">
+                <i class="bi bi-trash"></i>&nbsp;Delete
+            </a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="card text-dark bg-light mb-3">
+                <div class="card-header fw-bold">Details</div>
+                <div class="card-body">
+                    <p class="card-text mb-2" th:text="|First Name: ${customer.firstName}|">First Name: </p>
+                    <p class="card-text mb-2" th:text="|Last Name: ${customer.lastName}|">Last Name: </p>
+                    <p class="card-text mb-2"
+                       th:utext="|Email: <a class='link-secondary' href='mailto:${customer.email}'>${customer.email}</a>|">
+                        Email: </p>
+                    <p class="card-text mb-2" th:text="|Phone: ${customer.phoneNumber}|">Phone: </p>
+                </div>
+            </div>
+            <div class="card text-dark bg-light mb-3">
+                <div class="card-header fw-bold">Orders</div>
+                <div class="card-body">
+                    <p th:if="${#lists.isEmpty(customer.orders)}">No orders</p>
+                    <div th:unless="${#lists.isEmpty(customer.orders)}" class="table-responsive">
+                        <table class="table table-sm table-borderless">
+                            <thead class="text-secondary">
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">No.</th>
+                                <th scope="col">Total Price</th>
+                                <th scope="col"></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="order, status : ${customer.orders}">
+                                <td th:text="${status.count}">1</td>
+                                <td th:text="${order.uid}">0123456789</td>
+                                <td th:text="${#aggregates.sum(order.orderItems.![totalPrice])}">1000</td>
+                                <td class="text-end">
+                                    <a th:href="@{/orders(id=${order.id})}" class="link-secondary"><i
+                                            class="bi bi-info-circle-fill"></i></a>
+                                    &nbsp;
+                                    <a th:href="@{/updateOrder(id=${order.id})}" class="link-secondary"><i
+                                            class="bi bi-pencil-fill"></i></a>
+                                    &nbsp;
+                                    <a data-link-type="confirmDelete" th:href="@{/deleteOrder(id=${order.id}, redirectUrl='/customers?id=' + ${customer.id})}" class="link-secondary"><i
+                                            class="bi bi-trash-fill"></i></a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <p class="row mb-2">
+        <p>
+            <a id="backBtn" name="backBtn" onclick="window.history.go(-1)" class="btn btn-secondary px-4">Back</a>
+        </p>
+    </div>
+</div>
+</body>
+</html>

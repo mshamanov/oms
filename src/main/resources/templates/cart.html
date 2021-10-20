@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{components/layout :: layout(~{::title}, ~{::#contents}, ~{::scripts})}">
+<head>
+    <title>Orders</title>
+</head>
+<body>
+<div id="contents">
+    <script>
+    let map = sessionStorage.getItem("orderProducts");
+    const products = {};
+
+    if (map) {
+        map = JSON.parse(map);
+    }
+
+
+    </script>
+    <form id="saveOrderForm" th:action="@{/saveCart}" th:object="${currentOrder}" method="post">
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <div>
+                <h2 class="h2" th:text="${currentOrder.id} ? 'Updating order' : _">Cart</h2>
+                <h6 class="h6" th:if="${currentOrder.id} != null" th:text="|Order no.: ${currentOrder.uid}|">
+                    Order no.: 0123456789
+                </h6>
+                <h6 class="h6"
+                    th:text="|Customer: *{customer.firstName} *{customer.lastName}|">
+                    Customer: Mike Wise
+                </h6>
+                <input type="hidden" th:field="*{customer.id}">
+                <input type="hidden" th:field="*{customer.firstName}">
+                <input type="hidden" th:field="*{customer.lastName}">
+            </div>
+            <h4><span class="badge bg-dark rounded-pill" th:text="*{#aggregates.sum(orderItems.![amount])} ?: 0">3</span>
+            </h4>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-lg table-bordered table-light">
+                <thead>
+                <tr>
+                    <th scope="col" class="w-50">Name</th>
+                    <th scope="col" class="w-auto">Pcs.</th>
+                    <th scope="col" class="w-auto">Price</th>
+                    <th scope="col" class="w-auto">Total</th>
+                    <th scope="col" class="w-auto"></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:if="${#lists.isEmpty(currentOrder.orderItems)}">
+                    <td colspan="5">
+                        No products
+                    </td>
+                </tr>
+                <tr th:each="orderItem, status : *{orderItems}">
+                    <input type="hidden" th:field="*{orderItems[__${status.index}__].product.id}">
+                    <th:block th:if="${orderItem.product.id != null}"
+                              th:with="productId=${orderItem.product.id}, productAmount=${orderItem.amount}, productTotalPrice=${orderItem.totalPrice}">
+                        <td th:text="${orderItem.product.name}">Product name</td>
+                        <td><input type="number" th:field="*{orderItems[__${status.index}__].amount}"
+                                   class="form-control form-control-sm w-50" min="0" required="required">
+                        </td>
+                        <td th:text="|${#numbers.formatDecimal(orderItem.price, 1, 'DEFAULT', 2, 'DEFAULT')}|">
+                            399.99$
+                        </td>
+                        <td th:text="|${#numbers.formatDecimal(orderItem.totalPrice, 1, 'DEFAULT', 2, 'DEFAULT')}|">
+                            399.99$
+                        </td>
+                        <td>
+                            <a th:href="@{/showCart(deleteId=${orderItem.product.id})}"
+                               class="btn btn-sm btn-link link-secondary p-0"><i
+                                    class="bi bi-trash-fill"></i></a>
+                        </td>
+                        <script th:inline="javascript">
+                            products['[[${productId}]]'] = {amount: [[${productAmount}]], totalPrice: [[${productTotalPrice}]]};
+                        </script>
+                    </th:block>
+                </tr>
+                <tr>
+                    <th:block th:with="totalPrice=${#aggregates.sum(currentOrder.orderItems.![totalPrice])}">
+                        <td colspan="5" class="fw-bold text-end"
+                            th:text="|Total: ${#numbers.formatDecimal(totalPrice ?: 0, 1, 'DEFAULT', 2, 'DEFAULT')}|">
+                            Total: 200$
+                        </td>
+                    </th:block>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="text-end">
+            <a th:href="@{/createOrder(customerId=${currentOrder.customer.id})}" type="button" class="btn btn-secondary">Back to
+                products
+            </a>
+            <button onclick="changeAction()" class="btn btn-secondary"
+                    th:attr="disabled=${#lists.isEmpty(currentOrder.orderItems)} ? 'disabled' : _">Recalculate
+            </button>
+            <button type="submit" class="btn btn-secondary"
+                    th:attr="disabled=${#lists.isEmpty(currentOrder.orderItems)} ? 'disabled' : _">Proceed
+            </button>
+        </div>
+        <div class="row mt-3 px-3" th:if="${#fields.hasAnyErrors()}">
+            <div th:each="error: ${#fields.allErrors()}" class="alert alert-danger d-flex align-items-center"
+                 role="alert">
+                <h3><i class="bi bi-exclamation-triangle-fill me-2"></i></h3>
+                <div th:text="${error}">Error message</div>
+            </div>
+        </div>
+    </form>
+</div>
+<script th:ref="scripts" th:inline="javascript">
+    function changeAction() {
+        const saveForm = document.getElementById("saveOrderForm");
+        saveForm.action = [[@{/showCart}]];
+        saveForm.submit();
+    }
+
+    if (products) {
+        const customerId = [[${currentOrder.customer.id}]];
+
+        if (customerId !== null && customerId !== +sessionStorage.getItem("customerId")) {
+            sessionStorage.setItem("customerId", customerId);
+        }
+        sessionStorage.setItem("orderProducts", JSON.stringify(products));
+    }
+
+</script>
+</body>
+</html>

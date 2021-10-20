@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{components/layout :: layout(~{::title}, ~{::#contents}, _)}">
+<head>
+    <title>Order</title>
+</head>
+<body>
+<div id="contents">
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h2 class="h2">Order</h2>
+        <div>
+            <a onclick="updateOrderHandler(event)" th:href="@{/updateOrder(id=${order.id})}" class="btn btn-sm btn-outline-secondary">
+                <i class="bi bi-pencil"></i>&nbsp;Edit
+            </a>
+            <a data-link-type="confirmDelete" th:href="@{/deleteOrder(id=${order.id})}" class="btn btn-sm btn-outline-secondary">
+                <i class="bi bi-trash"></i>&nbsp;Delete
+            </a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="card text-dark bg-light mb-3">
+                <div class="card-header fw-bold">Customer details</div>
+                <div class="card-body">
+                    <p class="card-text mb-2" th:text="|First Name: ${order.customer.firstName}|">First Name: </p>
+                    <p class="card-text mb-2" th:text="|Last Name: ${order.customer.lastName}|">Last Name: </p>
+                    <p class="card-text mb-2"
+                       th:utext="|Email: <a class='text-secondary' href='mailto:${order.customer.email}'>${order.customer.email}</a>|">
+                        Email: </p>
+                    <p class="card-text mb-2" th:text="|Phone: ${order.customer.phoneNumber}|">Phone: </p>
+                </div>
+            </div>
+            <div class="card text-dark bg-light mb-3">
+                <div class="card-header fw-bold">Order details</div>
+                <div class="card-body">
+                    <p class="card-text mb-2" th:text="|No.: ${order.uid}|">No.: </p>
+                    <p class="card-text mb-2"
+                       th:text="|Created: ${#dates.format(order.createdOn, 'dd MMMM yyyy @ HH:mm')}|">>Created: </p>
+                    <p class="card-text mb-2" th:text="|Total items: ${#aggregates.sum(order.orderItems.![amount])}|">Total
+                        items: </p>
+                    <p class="card-text mb-2"
+                       th:text="|Total price: ${#aggregates.sum(order.orderItems.![totalPrice])}|">Total price: </p>
+                </div>
+            </div>
+            <div class="card text-dark bg-light mb-3">
+                <div class="card-header fw-bold">Products details</div>
+                <div class="card-body">
+                    <p th:if="${#lists.isEmpty(order.orderItems)}">No orders</p>
+                    <div th:unless="${#lists.isEmpty(order.orderItems)}" class="table-responsive">
+                        <table class="table table-sm table-borderless">
+                            <thead class="text-secondary">
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Pcs.</th>
+                                <th scope="col">Price</th>
+                                <th scope="col">Total</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="orderItem, status : ${order.orderItems}">
+                                <td th:text="${status.count}">1</td>
+                                <td th:text="${orderItem.product.name} ?: 'Unknown'">Product name</td>
+                                <td th:text="${orderItem.amount}">10</td>
+                                <td th:text="${orderItem.price}">399.00</td>
+                                <td th:text="${orderItem.totalPrice}">3990.00</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mb-2">
+        <div class="col-2">
+            <a id="backBtn" name="backBtn" onclick="window.history.go(-1)" class="btn btn-secondary px-4">Back</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

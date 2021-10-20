@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{components/layout :: layout(~{::title}, ~{::#contents}, _)}">
+<head>
+    <title>Orders</title>
+</head>
+<body>
+<div id="contents">
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <div>
+            <h1 class="h2">Orders</h1>
+            <h6 class="h6" th:text="|Total: ${#numbers.formatDecimal(totalOrdersPrice ?: 0, 1, 'DEFAULT', 2, 'DEFAULT')}|">
+                Total: 1399.99
+            </h6>
+        </div>
+        <div class="btn-toolbar">
+            <div id="sort-menu"
+                 th:replace="~{components/sort-menu :: sort-menu('uid-Number, createdOn-Date, customer-Customer')}"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-4">
+            <form th:action="@{/orders}" method="get">
+                <div class="input-group mb-3">
+                    <input type="text" name="search" class="form-control" placeholder="Search"
+                           th:value="${param.search} ?: _">
+                    <button type="submit" class="btn btn-outline-secondary">Search</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-striped table-sm">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">No.</th>
+                <th scope="col">Date/Time</th>
+                <th scope="col">Customer</th>
+                <th scope="col">Total Price</th>
+                <th scope="col">Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:if="${#lists.isEmpty(orders)}">
+                <td colspan="6">
+                    No orders
+                </td>
+            </tr>
+            <tr th:each="order, status : ${orders}">
+                <td th:text="${status.count}">1</td>
+                <td th:text="${order.uid}">1234567890</td>
+                <td th:text="${#dates.format(order.createdOn, 'dd MMMM yyyy / HH:mm')}"></td>
+                <td th:text="|${order.customer.firstName} ${order.customer.lastName}">Anna Smith</td>
+                <td th:text="${#aggregates.sum(order.orderItems.![totalPrice])}">1000</td>
+                <td>
+                    <a th:href="@{/orders(id=${order.id})}" class="link-secondary"><i
+                            class="bi bi-info-circle-fill"></i></a>
+                    &nbsp;
+                    <a onclick="updateOrderHandler(event)" th:href="@{/updateOrder(id=${order.id})}"
+                       class="link-secondary"><i
+                            class="bi bi-pencil-fill"></i></a>
+                    &nbsp;
+                    <a data-link-type="confirmDelete" th:href="@{/deleteOrder(id=${order.id})}"
+                       class="link-secondary"><i class="bi bi-trash-fill"></i></a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="text-center text-secondary mb-3">
+        <div th:replace="~{components/pagination :: pagination}"></div>
+    </div>
+</div>
+</body>
+</html>

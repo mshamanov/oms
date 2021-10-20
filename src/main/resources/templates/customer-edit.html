@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{components/layout :: layout(~{::title}, ~{::#contents}, _)}">
+<head>
+    <title th:text="${pageTitle} ?: _">Customer</title>
+</head>
+<body>
+<div id="contents">
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h2 class="h2" th:text="${pageTitle} ?: _">Customer</h2>
+    </div>
+    <div class="row mt-2 mb-5">
+        <form th:action="@{/saveCustomer}" th:object="${customer}" method="post" class="needs-validation" novalidate="">
+            <input type="hidden" th:field="*{id}">
+            <div class="row g-3">
+                <div class="col-sm-6">
+                    <label for="firstName" class="form-label">First name</label>
+                    <input type="text" class="form-control" th:errorclass="is-invalid" id="firstName"
+                           th:field="*{firstName}" placeholder=""
+                           value="" required="">
+                    <div class="invalid-feedback">
+                        Valid first name is required.
+                    </div>
+                </div>
+
+                <div class="col-sm-6">
+                    <label for="lastName" class="form-label">Last name</label>
+                    <input type="text" class="form-control" th:errorclass="is-invalid" id="lastName"
+                           th:field="*{lastName}" placeholder=""
+                           value="" required="">
+                    <div class="invalid-feedback">
+                        Valid last name is required.
+                    </div>
+                </div>
+
+                <div class="col-12">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" class="form-control" th:errorclass="is-invalid" id="email" th:field="*{email}"
+                           placeholder="you@example.com" required="">
+                    <div class="invalid-feedback">
+                        Please enter a valid email address.
+                    </div>
+                </div>
+
+                <div class="col-12">
+                    <label for="phoneNumber" class="form-label">Phone <span class="text-muted">(Optional)</span></label>
+                    <input type="text" class="form-control" th:errorclass="is-invalid" id="phoneNumber"
+                           th:field="*{phoneNumber}" placeholder="+7 999 123 456">
+                    <div class="invalid-feedback">
+                        Please enter your phone number.
+                    </div>
+                </div>
+            </div>
+            <hr class="my-4">
+            <div class="row mb-2">
+                <p>
+                    <button class="btn btn-secondary" type="submit">Save customer</button>
+                    <a id="backBtn" name="backBtn" onclick="window.history.go(-1)"
+                       class="btn btn-secondary px-4">Back</a>
+                </p>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

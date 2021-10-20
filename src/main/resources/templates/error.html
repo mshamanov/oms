@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{components/layout :: headLayout(~{::title})}">
+    <title>Error</title>
+</head>
+<body>
+<div class="container">
+    <div class="jumbotron alert-danger my-5">
+        <h1><i class="fa fa-warning"></i> Oops... something went wrong.</h1>
+        <h2 th:text="${status + ' ' + error}"></h2>
+    </div>
+</div>
+</body>
+</html>

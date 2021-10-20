@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{components/layout :: layout(_, ~{::#contents}, _)}">
+<body>
+<div id="contents">
+    <nav th:fragment="pagination" th:if="${currentPage >= 1 && currentPage <= totalPages}" class="d-inline-block">
+        <ul class="pagination pagination-sm m-0" th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder)}, search=${urlBuilder.fromCurrentRequest()}">
+            <li class="page-item" th:classappend="${currentPage <= 1 ? 'disabled' : ''}">
+                <a class="page-link link-dark" th:href="${search.replaceQueryParam('page', currentPage - 1).toUriString()}">Previous</a>
+            </li>
+            <li th:if="${currentPage - 3 >= 1}" class="page-item">
+                <a class="page-link link-dark" th:href="${search.replaceQueryParam('page', 1).toUriString()}">1</a>
+            </li>
+            <li th:if="${currentPage - 3 > 1}" class="page-item">
+                <a class="page-link link-dark" th:href="${search.replaceQueryParam('page', currentPage - 3).toUriString()}">...</a>
+            </li>
+            <li th:each="i: ${#numbers.sequence((currentPage - 2 > 1 ? currentPage - 2 : 1), (currentPage + 2 < totalPages ? currentPage + 2 : totalPages))}"
+                class="page-item" th:classappend="${currentPage == i} ? 'disabled'">
+                <a class="page-link link-dark" th:classappend="${currentPage == i} ? 'text-white bg-secondary'"
+                   th:href="${search.replaceQueryParam('page', i).toUriString()}" th:text="${i}">2</a>
+            </li>
+            <li th:if="${currentPage + 3 < totalPages}" class="page-item">
+                <a class="page-link link-dark" th:href="${search.replaceQueryParam('page', currentPage + 3).toUriString()}">...</a>
+            </li>
+            <li th:if="${currentPage + 3 <= totalPages}" class="page-item">
+                <a class="page-link link-dark" th:href="${search.replaceQueryParam('page', totalPages).toUriString()}"
+                   th:text="${totalPages}">4</a>
+            </li>
+            <li class="page-item" th:classappend="${currentPage >= totalPages ? 'disabled' : ''}">
+                <a class="page-link link-dark" th:href="${search.replaceQueryParam('page', currentPage + 1).toUriString()}">Next</a>
+            </li>
+        </ul>
+    </nav>
+</div>
+</body>
+</html>

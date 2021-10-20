@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{components/layout :: layout(~{::title}, ~{::#contents}, ~{::script})}">
+<head>
+    <title>Create Order</title>
+</head>
+<body>
+<div id="contents">
+    <form onsubmit="submitOrderForm(event)" th:action="@{/showCart}" th:object="${currentOrder}" method="post">
+        <input type="hidden" th:field="*{customer.id}">
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <div>
+                <h2 class="h2" th:text="${currentOrder.id} ? 'Updating order' : _">Creating order</h2>
+                <h6 class="h6" th:if="${currentOrder.id} != null" th:text="|Order no.: ${currentOrder.uid}|">
+                    Order no.: 0123456789
+                </h6>
+                <h6 class="h6"
+                    th:text="|Customer: *{customer.firstName} *{customer.lastName}|">
+                    Customer: Mike Wise
+                </h6>
+            </div>
+            <div>
+                <div class="d-inline-block">
+                    <div id="sort-menu" th:replace="~{components/sort-menu :: sort-menu('name-Name, price-Price')}"></div>
+                </div>
+                <a onclick="cancelOrder(event)" class="btn btn-sm btn-outline-secondary">
+                    <i class="bi bi-trash"></i>&nbsp;Cancel
+                </a>
+                <button type="submit" class="btn btn-sm btn-outline-secondary position-relative me-5">
+                    <i class="bi bi-cart3"></i>&nbsp;Cart
+                    <span id="cart-total"
+                          class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">0.00</span>
+                </button>
+            </div>
+        </div>
+    </form>
+    <div class="row">
+        <div class="col-sm-4">
+            <form th:action="@{/createOrder}" method="get">
+                <div class="input-group mb-3">
+                    <input type="hidden" name="customerId" th:value="${currentOrder.customer.id}">
+                    <input type="text" name="search" class="form-control" placeholder="Search"
+                           th:value="${param.search} ?: _">
+                    <button type="submit" class="btn btn-outline-secondary">Search</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-striped table-sm" onclick="handleCounter(event)">
+            <thead>
+            <tr>
+                <th scope="col" class="w-auto">#</th>
+                <th scope="col" class="w-50">Name</th>
+                <th scope="col" class="w-25">Price</th>
+                <th scope="col" class="w-auto">Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:if="${#lists.isEmpty(products)}">
+                <td colspan="4">
+                    No products
+                </td>
+            </tr>
+            <tr th:each="product, status : ${products}">
+                <td th:text="${status.count}">1</td>
+                <td th:text="${product.name}">Some product</td>
+                <td th:id="|product-price-${product.id}|" th:attr="data-raw-price=${product.price}"
+                    th:text="${#numbers.formatDecimal(product.price, 1, 'DEFAULT', 2, 'DEFAULT')}">399.99
+                </td>
+                <td>
+                    <div class="d-flex justify-content-center align-items-center">
+                        <a href="#" class="link-secondary"><i th:id="|product-dash-${product.id}|"
+                                                     class="bi bi-dash-circle-fill"></i></a>
+                        <input type="number" th:id="|product-counter-${product.id}|" onkeyup="handleCounter(event)"
+                               class="product-counter" value="0">
+                        <a href="#" class="link-secondary"><i th:id="|product-plus-${product.id}|"
+                                                     class="bi bi-plus-circle-fill"></i></a>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="text-center text-secondary mb-3">
+        <div th:replace="~{components/pagination :: pagination}"></div>
+    </div>
+</div>
+<script th:inline="javascript">
+        const currentCustomerId = /*[[${currentOrder.customer.id}]]*/ 1;
+</script>
+<script type="text/javascript" th:src="@{/js/create-order.js}"></script>
+</body>
+</html>
