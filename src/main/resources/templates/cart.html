@@ -13,10 +13,8 @@
     if (map) {
         map = JSON.parse(map);
     }
-
-
     </script>
-    <form id="saveOrderForm" th:action="@{/saveCart}" th:object="${currentOrder}" method="post">
+    <form id="saveOrderForm" th:action="@{/saveCart}" th:object="${currentOrder}" method="post" class="mb-2">
         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
             <div>
                 <h2 class="h2" th:text="${currentOrder.id} ? 'Updating order' : _">Cart</h2>
@@ -121,7 +119,6 @@
         }
         sessionStorage.setItem("orderProducts", JSON.stringify(products));
     }
-
 </script>
 </body>
 </html>
