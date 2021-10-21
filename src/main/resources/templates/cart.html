@@ -39,9 +39,9 @@
                 <thead>
                 <tr>
                     <th scope="col" class="w-50">Name</th>
-                    <th scope="col" class="w-auto">Pcs.</th>
-                    <th scope="col" class="w-auto">Price</th>
-                    <th scope="col" class="w-auto">Total</th>
+                    <th scope="col" style="width: 15%;">Pcs.</th>
+                    <th scope="col" style="width: 17%;">Price</th>
+                    <th scope="col" style="width: 17%;">Total</th>
                     <th scope="col" class="w-auto"></th>
                 </tr>
                 </thead>
@@ -57,7 +57,7 @@
                               th:with="productId=${orderItem.product.id}, productAmount=${orderItem.amount}, productTotalPrice=${orderItem.totalPrice}">
                         <td th:text="${orderItem.product.name}">Product name</td>
                         <td><input type="number" th:field="*{orderItems[__${status.index}__].amount}"
-                                   class="form-control form-control-sm w-50" min="0" required="required">
+                                   class="form-control form-control-sm w-100" min="0" required="required">
                         </td>
                         <td th:text="|${#numbers.formatDecimal(orderItem.price, 1, 'DEFAULT', 2, 'DEFAULT')}|">
                             399.99$
@@ -65,7 +65,7 @@
                         <td th:text="|${#numbers.formatDecimal(orderItem.totalPrice, 1, 'DEFAULT', 2, 'DEFAULT')}|">
                             399.99$
                         </td>
-                        <td>
+                        <td class="text-end">
                             <a th:href="@{/showCart(deleteId=${orderItem.product.id})}"
                                class="btn btn-sm btn-link link-secondary p-0"><i
                                     class="bi bi-trash-fill"></i></a>
@@ -86,7 +86,7 @@
                 </tbody>
             </table>
         </div>
-        <div class="text-end">
+        <div class="d-flex justify-content-end gap-1">
             <a th:href="@{/createOrder(customerId=${currentOrder.customer.id})}" type="button" class="btn btn-secondary">Back to
                 products
             </a>

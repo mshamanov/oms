@@ -35,7 +35,7 @@ function applySortingDirection(event) {
 }
 
 function cancelOrder() {
-        store.clear();
+        sessionStorage.clear();
         window.location = "/";
 }
 

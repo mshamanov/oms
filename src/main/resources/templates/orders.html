@@ -6,7 +6,7 @@
 </head>
 <body>
 <div id="contents">
-    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <div class="d-flex justify-content-between flex-wrap align-items-center pt-3 pb-2 mb-3 border-bottom">
         <div>
             <h1 class="h2">Orders</h1>
             <h6 class="h6"
@@ -14,14 +14,14 @@
                 Total: 1399.99
             </h6>
         </div>
-        <div class="btn-toolbar">
+        <div class="btn-toolbar gap-1">
             <div id="sort-menu"
                  th:replace="~{components/sort-menu :: sort-menu('uid-Number, createdOn-Date, customer-Customer')}"></div>
             <div th:replace="~{components/export-btn-group :: export-btn-group(@{/api/orders/json}, @{/api/orders/xml})}"></div>
         </div>
     </div>
     <div class="row">
-        <div class="col-sm-4">
+        <div class="col-md-4">
             <div th:replace="~{components/search-bar :: search-bar(@{/orders}, _)}"></div>
         </div>
     </div>

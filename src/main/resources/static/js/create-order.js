@@ -33,6 +33,8 @@ function handleCounter(event) {
         return;
     }
 
+    event.preventDefault();
+
     const split = action.id.split("-");
 
     if (split.length !== 3) {

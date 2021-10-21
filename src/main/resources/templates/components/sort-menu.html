@@ -4,7 +4,7 @@
 <body>
 <div id="contents">
     <div id="sort-menu" th:fragment="sort-menu(arrayPairs)" class="dropdown" th:with="direction=${param.direction} ?: 'asc'">
-        <a class="btn btn-sm btn-outline-secondary dropdown-toggle ms-1" href="#" role="button"
+        <a class="btn btn-sm btn-outline-secondary dropdown-toggle" href="#" role="button"
            id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
             <i th:if="${#strings.equalsIgnoreCase(direction, 'asc')}" class="bi bi-sort-alpha-down"></i>
             <i th:if="${#strings.equalsIgnoreCase(direction, 'desc')}" class="bi bi-sort-alpha-up"></i>

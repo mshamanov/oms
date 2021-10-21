@@ -8,7 +8,7 @@
 <div id="contents">
     <form onsubmit="submitOrderForm(event)" th:action="@{/showCart}" th:object="${currentOrder}" method="post">
         <input type="hidden" th:field="*{customer.id}">
-        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <div class="d-flex justify-content-between flex-wrap align-items-center pt-3 pb-2 mb-3 border-bottom">
             <div>
                 <h2 class="h2" th:text="${currentOrder.id} ? 'Updating order' : _">Creating order</h2>
                 <h6 class="h6" th:if="${currentOrder.id} != null" th:text="|Order no.: ${currentOrder.uid}|">
@@ -19,15 +19,12 @@
                     Customer: Mike Wise
                 </h6>
             </div>
-            <div>
-                <div class="d-inline-block">
-                    <div id="sort-menu"
-                         th:replace="~{components/sort-menu :: sort-menu('name-Name, price-Price')}"></div>
-                </div>
+            <div class="btn-toolbar gap-1">
+                <div id="sort-menu" th:replace="~{components/sort-menu :: sort-menu('name-Name, price-Price')}"></div>
                 <a onclick="cancelOrder()" class="btn btn-sm btn-outline-secondary">
                     <i class="bi bi-trash"></i>&nbsp;Cancel
                 </a>
-                <button type="submit" class="btn btn-sm btn-outline-secondary position-relative me-5">
+                <button type="submit" class="btn btn-sm btn-outline-secondary position-relative me-3 me-sm-5">
                     <i class="bi bi-cart3"></i>&nbsp;Cart
                     <span id="cart-total"
                           class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">0.00</span>
@@ -36,7 +33,7 @@
         </div>
     </form>
     <div class="row">
-        <div class="col-sm-4">
+        <div class="col-md-4">
             <div th:replace="~{components/search-bar :: search-bar(@{/createOrder}, ~{::input-search})}">
                 <input th:ref="input-search" type="hidden" name="customerId" th:value="${currentOrder.customer.id}">
             </div>
@@ -84,6 +81,8 @@
 </div>
 <script th:inline="javascript">
         const currentCustomerId = /*[[${currentOrder.customer.id}]]*/ 1;
+
+
 
 </script>
 <script type="text/javascript" th:src="@{/js/create-order.js}"></script>
