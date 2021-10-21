@@ -9,12 +9,11 @@
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
         <h2 class="h2">Products</h2>
         <div class="btn-toolbar">
-            <a th:href="@{/addProduct}" class="btn btn-sm btn-outline-secondary">
+            <div id="sort-menu" th:replace="~{components/sort-menu :: sort-menu('name-Name, price-Price')}"></div>
+            <a th:href="@{/addProduct}" class="btn btn-sm btn-outline-secondary ms-1">
                 <i class="bi bi-plus-circle"></i>&nbsp;Add Product
             </a>
-            <div class="d-inline-block">
-                <div id="sort-menu" th:replace="~{components/sort-menu :: sort-menu('name-Name, price-Price')}"></div>
-            </div>
+            <div th:replace="~{components/export-btn-group :: export-btn-group(@{/api/products/json}, @{/api/products/xml})}"></div>
         </div>
     </div>
     <div class="row">

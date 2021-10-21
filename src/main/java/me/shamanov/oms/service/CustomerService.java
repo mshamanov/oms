@@ -19,6 +19,10 @@ public class CustomerService {
         this.customerRepository = customerRepository;
     }
 
+    public List<Customer> getAllCustomers() {
+        return this.customerRepository.findAll();
+    }
+
     public List<Customer> getAllCustomers(Sort sort) {
         return this.customerRepository.findAll(sort);
     }

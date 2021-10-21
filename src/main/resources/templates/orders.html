@@ -9,13 +9,15 @@
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
         <div>
             <h1 class="h2">Orders</h1>
-            <h6 class="h6" th:text="|Total: ${#numbers.formatDecimal(totalOrdersPrice ?: 0, 1, 'DEFAULT', 2, 'DEFAULT')}|">
+            <h6 class="h6"
+                th:text="|Total: ${#numbers.formatDecimal(totalOrdersPrice ?: 0, 1, 'DEFAULT', 2, 'DEFAULT')}|">
                 Total: 1399.99
             </h6>
         </div>
         <div class="btn-toolbar">
             <div id="sort-menu"
                  th:replace="~{components/sort-menu :: sort-menu('uid-Number, createdOn-Date, customer-Customer')}"></div>
+            <div th:replace="~{components/export-btn-group :: export-btn-group(@{/api/orders/json}, @{/api/orders/xml})}"></div>
         </div>
     </div>
     <div class="row">

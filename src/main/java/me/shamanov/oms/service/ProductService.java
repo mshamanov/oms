@@ -18,6 +18,10 @@ public class ProductService {
         this.productRepository = productRepository;
     }
 
+    public List<Product> getAllProducts() {
+        return this.productRepository.findAll();
+    }
+
     public List<Product> getAllProducts(Sort sort) {
         return this.productRepository.findAll(sort);
     }

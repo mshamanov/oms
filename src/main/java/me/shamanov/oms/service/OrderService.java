@@ -19,6 +19,10 @@ public class OrderService {
         this.orderRepository = orderRepository;
     }
 
+    public List<Order> getAllOrders() {
+        return this.orderRepository.findAll();
+    }
+
     public List<Order> getAllOrders(Sort sort) {
         return this.orderRepository.findAll(sort);
     }

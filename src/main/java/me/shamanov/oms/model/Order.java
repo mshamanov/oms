@@ -1,5 +1,7 @@
 package me.shamanov.oms.model;
 
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -35,6 +37,8 @@ public class Order {
     @Column(nullable = false)
     private Date createdOn;
 
+    @JacksonXmlElementWrapper(localName = "OrderItems")
+    @JacksonXmlProperty(localName = "OrderItem")
     @Size(min = 1, message = "Order must have at least one product")
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "order", orphanRemoval = true)
     private List<@Valid OrderItem> orderItems;
