@@ -23,10 +23,11 @@ function confirmAction(event, msg) {
 function applySortingDirection(event) {
     const sortBy = event.target.id;
     if (sortBy === "sort-desc" || sortBy === "sort-asc") {
-        const sortTypes = document.querySelectorAll("#sort-menu a");
+        const sortTypes = document.querySelectorAll("#sort-menu ul li > a");
+        const regExp = /([?&]direction=)([a-zA-Z]*)/;
         for (sortType of sortTypes) {
-            if (sortType.href.search(/[?&]direction=([a-zA-Z]*)/) !== -1) {
-                sortType.href = sortType.href.replace(/([?&]direction=)([a-zA-Z]*)/, "$1" + sortBy.split("-")[1]);
+            if (sortType.href.search(regExp) !== -1) {
+                sortType.href = sortType.href.replace(regExp, "$1" + sortBy.split("-")[1]);
             } else {
                 sortType.href += "&direction=desc";
             }

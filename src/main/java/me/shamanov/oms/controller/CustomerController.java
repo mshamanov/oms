@@ -42,15 +42,14 @@ public class CustomerController {
             return "customer-info";
         }
 
-        Page<Customer> customerPage;
-        PageRequest pageRequest = PageRequest.of(page - 1, size);
+        Sort.Order sortOrder = new Sort.Order(Sort.Direction.fromString(direction), sort).ignoreCase();
+        PageRequest pageRequest = PageRequest.of(page - 1, size, Sort.by(sortOrder));
 
+        Page<Customer> customerPage;
         if (search != null && !search.isBlank()) {
-            customerPage = this.customerService.getCustomersBySearchValue(search,
-                    pageRequest.withSort(Sort.Direction.fromString(direction), sort));
+            customerPage = this.customerService.getCustomersBySearchValue(search, pageRequest);
         } else {
-            customerPage = this.customerService.getAllCustomers(
-                    pageRequest.withSort(Sort.Direction.fromString(direction), sort));
+            customerPage = this.customerService.getAllCustomers(pageRequest);
         }
 
         model.addAttribute("currentPage", page);

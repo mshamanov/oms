@@ -66,9 +66,10 @@ public class OrderController {
             sort = "customer.firstName";
         }
 
-        Page<Order> orderPage;
-        PageRequest pageRequest = PageRequest.of(page - 1, size, Sort.Direction.fromString(direction), sort);
+        Sort.Order sortOrder = new Sort.Order(Sort.Direction.fromString(direction), sort).ignoreCase();
+        PageRequest pageRequest = PageRequest.of(page - 1, size, Sort.by(sortOrder));
 
+        Page<Order> orderPage;
         if (search != null && !search.isBlank()) {
             orderPage = this.orderService.getOrdersBySearchValue(search, pageRequest);
         } else {
@@ -111,9 +112,10 @@ public class OrderController {
         orderItems.add(orderItem);
         order.setOrderItems(orderItems);
 
-        Page<Product> productPage;
-        PageRequest pageRequest = PageRequest.of(page - 1, size, Sort.Direction.fromString(direction), sort);
+        Sort.Order sortOrder = new Sort.Order(Sort.Direction.fromString(direction), sort).ignoreCase();
+        PageRequest pageRequest = PageRequest.of(page - 1, size, Sort.by(sortOrder));
 
+        Page<Product> productPage;
         if (search != null && !search.isBlank()) {
             productPage = this.productService.getProductsBySearchValue(search, pageRequest);
         } else {

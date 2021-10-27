@@ -35,10 +35,10 @@ public class ProductsController {
                                   @RequestParam(defaultValue = "20") int size,
                                   @RequestParam(defaultValue = "asc") String direction,
                                   Model model) {
+        Sort.Order sortOrder = new Sort.Order(Sort.Direction.fromString(direction), sort).ignoreCase();
+        PageRequest pageRequest = PageRequest.of(page - 1, size, Sort.by(sortOrder));
 
         Page<Product> productPage;
-        PageRequest pageRequest = PageRequest.of(page - 1, size, Sort.Direction.fromString(direction), sort);
-
         if (search != null && !search.isBlank()) {
             productPage = this.productService.getProductsBySearchValue(search, pageRequest);
         } else {
