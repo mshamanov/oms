@@ -17,7 +17,7 @@
         <div class="btn-toolbar gap-1">
             <div id="sort-menu"
                  th:replace="~{components/sort-menu :: sort-menu('uid-Number, createdOn-Date, customer-Customer')}"></div>
-            <div th:replace="~{components/export-btn-group :: export-btn-group(@{/api/orders/json}, @{/api/orders/xml})}"></div>
+            <div th:replace="~{components/export-btn-group :: export-btn-group(@{/api/orders?format=json}, @{/api/orders?format=xml})}"></div>
         </div>
     </div>
     <div class="row">
@@ -44,7 +44,7 @@
                 </td>
             </tr>
             <tr th:each="order, status : ${orders}">
-                <td th:text="${status.count}">1</td>
+                <td th:text="${status.count + ((currentPage - 1) * pageSize)}">1</td>
                 <td th:text="${order.uid}">1234567890</td>
                 <td th:text="${#dates.format(order.createdOn, 'dd MMMM yyyy / HH:mm')}"></td>
                 <td th:text="|${order.customer.firstName} ${order.customer.lastName}">Anna Smith</td>

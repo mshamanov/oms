@@ -13,7 +13,7 @@
                  th:replace="~{components/sort-menu :: sort-menu('firstName-First Name, lastName-Last Name, email-Email, phoneNumber-Phone')}"></div>
             <a th:href="@{/addCustomer}" class="btn btn-sm btn-outline-secondary">
                 <i class="bi bi-plus-circle"></i>&nbsp;Add Customer</a>
-            <div th:replace="~{components/export-btn-group :: export-btn-group(@{/api/customers/json}, @{/api/customers/xml})}"></div>
+            <div th:replace="~{components/export-btn-group :: export-btn-group(@{/api/customers?format=json}, @{/api/customers?format=xml})}"></div>
         </div>
     </div>
     <div class="row">
@@ -41,7 +41,7 @@
                 </td>
             </tr>
             <tr th:each="customer, status : ${customers}">
-                <td th:text="${status.count}">1</td>
+                <td th:text="${status.count + ((currentPage - 1) * pageSize)}">1</td>
                 <td th:text="${customer.firstName}">Anna</td>
                 <td th:text="${customer.lastName}">Smith</td>
                 <td th:text="${customer.email}">anna@example.com</td>

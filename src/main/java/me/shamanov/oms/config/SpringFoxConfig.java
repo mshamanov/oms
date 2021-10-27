@@ -17,8 +17,8 @@ public class SpringFoxConfig {
                 .apis(RequestHandlerSelectors.basePackage("me.shamanov.oms.rest"))
                 .paths(PathSelectors.any())
                 .build()
-                .tags(new Tag("Customer Controller", "Controller to manipulate customers"),
-                      new Tag("Order Controller", "Controller to manipulate orders"),
-                      new Tag("Product Controller", "Controller to manipulate products"));
+                .tags(new Tag("Customers", "Controller to manipulate customers"),
+                      new Tag("Orders", "Controller to manipulate orders"),
+                      new Tag("Products", "Controller to manipulate products"));
     }
 }

@@ -6,7 +6,7 @@ import me.shamanov.oms.dto.Customers;
 import me.shamanov.oms.model.Customer;
 import me.shamanov.oms.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.MimeTypeUtils;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/customers")
-@Api(tags = {"Customer Controller"})
+@RequestMapping("/api")
+@Api(tags = {"Customers"})
 public class CustomerRestController {
     private final CustomerService customerService;
 
@@ -24,19 +24,9 @@ public class CustomerRestController {
         this.customerService = customerService;
     }
 
-    @Operation(summary = "Customers as JSON", description = "Get all customers in JSON format")
-    @GetMapping(value = {"/", "/json"}, produces = {MimeTypeUtils.APPLICATION_JSON_VALUE})
-    public Customers getCustomersAsJSON() {
-        return this.getCustomers();
-    }
-
-    @Operation(summary = "Customers as XML", description = "Get all customers in XML format")
-    @GetMapping(value = "/xml", produces = {MimeTypeUtils.APPLICATION_XML_VALUE})
-    public Customers getCustomersAsXML() {
-        return this.getCustomers();
-    }
-
-    private Customers getCustomers() {
+    @Operation(summary = "Customers as JSON/XML", description = "Get all customers in JSON/XML format")
+    @GetMapping(value = "/customers", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+    public Customers getCustomers() {
         List<Customer> customerList = this.customerService.getAllCustomers();
         return new Customers(customerList);
     }

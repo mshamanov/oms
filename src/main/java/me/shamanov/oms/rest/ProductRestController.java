@@ -6,7 +6,7 @@ import me.shamanov.oms.dto.Products;
 import me.shamanov.oms.model.Product;
 import me.shamanov.oms.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.MimeTypeUtils;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/products")
-@Api(tags = {"Product Controller"})
+@RequestMapping("/api")
+@Api(tags = {"Products"})
 public class ProductRestController {
     private final ProductService productService;
 
@@ -24,19 +24,9 @@ public class ProductRestController {
         this.productService = productService;
     }
 
-    @Operation(summary = "Products as JSON", description = "Get all products in JSON format")
-    @GetMapping(value = {"/", "/json"}, produces = {MimeTypeUtils.APPLICATION_JSON_VALUE})
-    public Products getProductsAsJSON() {
-        return this.getProducts();
-    }
-
-    @Operation(summary = "Products as XML", description = "Get all products in XML format")
-    @GetMapping(value = "/xml", produces = {MimeTypeUtils.APPLICATION_XML_VALUE})
-    public Products getProductsAsXML() {
-        return this.getProducts();
-    }
-
-    private Products getProducts() {
+    @Operation(summary = "Products as JSON/XML", description = "Get all products in JSON/XML format")
+    @GetMapping(value = "/products", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+    public Products getProducts() {
         List<Product> productList = this.productService.getAllProducts();
         return new Products(productList);
     }
